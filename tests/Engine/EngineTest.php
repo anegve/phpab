@@ -9,8 +9,13 @@
 
 namespace PhpAb\Engine;
 
+use InvalidArgumentException;
+use PhpAb\Analytics\DataCollector\Google;
 use PhpAb\Event\Dispatcher;
 use PhpAb\Event\DispatcherInterface;
+use PhpAb\Exception\EngineLockedException;
+use PhpAb\Exception\TestCollisionException;
+use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Participation\Manager;
@@ -19,22 +24,23 @@ use PhpAb\Storage\Adapter\Runtime;
 use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
 use PhpAb\Variant\Chooser\ChooserInterface;
-use PhpAb\Variant\Chooser\StaticChooser;
 use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Variant\Chooser\StaticChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use PhpAb\Analytics\DataCollector\Google;
+use phpmock\Mock;
+use PHPUnit\Framework\TestCase;
 
-class EngineTest extends \PHPUnit_Framework_TestCase
+class EngineTest extends TestCase
 {
     private $alwaysParticipateFilter;
     private $chooser;
     private $variant;
     private $manager;
 
-    public function setUp()
+    public function setUp(): void
     {
-        \phpmock\Mock::disableAll();
+        Mock::disableAll();
 
         $this->alwaysParticipateFilter = new Percentage(100);
         $this->chooser = new StaticChooser(0);
@@ -47,7 +53,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    public function testEmptyManager()
+    public function testEmptyManager(): void
     {
         // Arrange
         $manager = new Manager(new Storage(new Runtime()));
@@ -60,7 +66,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
     }
 
-    public function testAddTest()
+    public function testAddTest(): void
     {
         // Arrange
         $test1 = new Test('foo');
@@ -78,11 +84,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $engine->getTests());
     }
 
-    /**
-     * @expectedException \PhpAb\Exception\TestNotFoundException
-     */
-    public function testGetTestNotFound()
+    public function testGetTestNotFound(): void
     {
+        $this->expectException(TestNotFoundException::class);
+
         // Arrange
         $engine = new Engine($this->manager, new Dispatcher());
 
@@ -90,11 +95,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->getTest('foo');
     }
 
-    /**
-     * @expectedException \PhpAb\Exception\TestCollisionException
-     */
-    public function testAlreadyExistsWithSameName()
+    public function testAlreadyExistsWithSameName(): void
     {
+        $this->expectException(TestCollisionException::class);
+
         // Arrange
         $engine = new Engine($this->manager, new Dispatcher());
         $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
@@ -103,7 +107,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
     }
 
-    public function testUserParticipatesVariant()
+    public function testUserParticipatesVariant(): void
     {
         // Arrange
         $this->manager->method('participates')
@@ -134,7 +138,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
     }
 
-    public function testUserDoesNotParticipateVariant()
+    public function testUserDoesNotParticipateVariant(): void
     {
         // Arrange
         $this->manager->method('participates')
@@ -161,11 +165,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->start();
-
         // Assert
     }
 
-    public function testUserParticipatesNonExistingVariant()
+    public function testUserParticipatesNonExistingVariant(): void
     {
         // Arrange
         $storage = new Storage(new Runtime());
@@ -191,7 +194,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
-    public function testUserShouldNotParticipateWasStoredInStorage()
+    public function testUserShouldNotParticipateWasStoredInStorage(): void
     {
         // Arrange
         $storage = new Storage(new Runtime());
@@ -215,7 +218,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($manager->getParticipatingVariant('foo'));
     }
 
-    public function testUserShouldNotParticipate()
+    public function testUserShouldNotParticipate(): void
     {
         // Arrange
         $storage = new Storage(new Runtime());
@@ -238,10 +241,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($manager->getParticipatingVariant('foo'));
     }
 
-    public function testUserShouldNotParticipateWithExistingVariant()
+    public function testUserShouldNotParticipateWithExistingVariant(): void
     {
         // Arrange
-         $storage = new Storage(new Runtime());
+        $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
         $test = new Test('foo');
@@ -263,7 +266,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testUserGetsNewParticipation()
+    public function testUserGetsNewParticipation(): void
     {
         // Arrange
         $storage = new Storage(new Runtime());
@@ -290,7 +293,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testNoVariantAvailableForTest()
+    public function testNoVariantAvailableForTest(): void
     {
         // Arrange
         $storage = new Storage(new Runtime());
@@ -316,7 +319,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     /**
      * Testing that Engine picks previous test runs values
      */
-    public function testPreviousRunConsistencyInStorage()
+    public function testPreviousRunConsistencyInStorage(): void
     {
         // Arrange
         $storage = new Storage(
@@ -359,24 +362,23 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertSame(
             [
-            'EXPID1' => 1,
-            'EXPID2' => 0
+                'EXPID1' => 1,
+                'EXPID2' => 0
             ],
             $testData
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNoFilterThrowsException()
+    public function testNoFilterThrowsException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
+            $this->createMock(ManagerInterface::class),
+            $this->createMock(DispatcherInterface::class),
             null, // This is the tested part
-            $this->getMock(ChooserInterface::class)
+            $this->createMock(ChooserInterface::class)
         );
 
         $test = new Test('foo_test');
@@ -384,20 +386,18 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->addTest($test);
-
         // Assert
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNoChooserThrowsException()
+    public function testNoChooserThrowsException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
+            $this->createMock(ManagerInterface::class),
+            $this->createMock(DispatcherInterface::class),
+            $this->createMock(FilterInterface::class),
             null // This is the tested part
         );
 
@@ -406,20 +406,18 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->addTest($test);
-
         // Assert
     }
 
-    /**
-     * @expectedException \PhpAb\Exception\EngineLockedException
-     */
-    public function testLockEngine()
+    public function testLockEngine(): void
     {
+        $this->expectException(EngineLockedException::class);
+
         // Arrange
         $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
+            $this->createMock(ManagerInterface::class),
+            $this->createMock(DispatcherInterface::class),
+            $this->createMock(FilterInterface::class),
             null // This is the tested part
         );
 
@@ -429,20 +427,18 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Act
         $engine->start();
         $engine->addTest($test);
-
         // Assert
     }
 
-    /**
-     * @expectedException \PhpAb\Exception\EngineLockedException
-     */
-    public function testStartTwice()
+    public function testStartTwice(): void
     {
+        $this->expectException(EngineLockedException::class);
+
         // Arrange
         $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
+            $this->createMock(ManagerInterface::class),
+            $this->createMock(DispatcherInterface::class),
+            $this->createMock(FilterInterface::class),
             null // This is the tested part
         );
 
@@ -452,7 +448,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Act
         $engine->start();
         $engine->start();
-
         // Assert
     }
 }

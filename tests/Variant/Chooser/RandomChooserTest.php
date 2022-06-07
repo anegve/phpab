@@ -13,39 +13,41 @@ use PhpAb\Variant\VariantInterface;
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RandomChooserTest extends PHPUnit_Framework_TestCase
+class RandomChooserTest extends TestCase
 {
-    public function testChooseVariants()
+    public function testChooseVariants(): void
     {
         // Override mt_rand
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-                ->setName('mt_rand')
-                ->setFunctionProvider(new FixedValueFunction(2));
+            ->setName('mt_rand')
+            ->setFunctionProvider(new FixedValueFunction(2));
         $mock = $builder->build();
         $mock->enable();
 
         // Arrange
-        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
-        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
-        $variant3 = $this->getMock(VariantInterface::class, [], ['v3']);
+        $variant1 = $this->createMock(VariantInterface::class, [], ['v1']);
+        $variant2 = $this->createMock(VariantInterface::class, [], ['v2']);
+        $variant3 = $this->createMock(VariantInterface::class, [], ['v3']);
 
         $chooser = new RandomChooser();
 
         // Act
-        $chosen = $chooser->chooseVariant([
-            $variant1,
-            $variant2,
-            $variant3,
-        ]);
+        $chosen = $chooser->chooseVariant(
+            [
+                $variant1,
+                $variant2,
+                $variant3,
+            ]
+        );
 
         // Assert
         $this->assertSame($variant3, $chosen);
     }
 
-    public function testChooseVariantsWithKeys()
+    public function testChooseVariantsWithKeys(): void
     {
         // Override mt_rand
         $builder = new MockBuilder();
@@ -56,22 +58,24 @@ class RandomChooserTest extends PHPUnit_Framework_TestCase
         $mock->enable();
 
         // Arrange
-        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
-        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
+        $variant1 = $this->createMock(VariantInterface::class, [], ['v1']);
+        $variant2 = $this->createMock(VariantInterface::class, [], ['v2']);
 
         $chooser = new RandomChooser();
 
         // Act
-        $chosen = $chooser->chooseVariant([
-            'Walter' => $variant1,
-            'White' => $variant2,
-        ]);
+        $chosen = $chooser->chooseVariant(
+            [
+                'Walter' => $variant1,
+                'White' => $variant2,
+            ]
+        );
 
         // Assert
         $this->assertSame($variant1, $chosen);
     }
 
-    public function testChooseVariantsFromEmpty()
+    public function testChooseVariantsFromEmpty(): void
     {
         // Arrange
         $chooser = new RandomChooser();
@@ -83,7 +87,7 @@ class RandomChooserTest extends PHPUnit_Framework_TestCase
         $this->assertNull($chosen);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // disable all mocked functions
         Mock::disableAll();

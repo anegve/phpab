@@ -9,16 +9,16 @@
 
 namespace PhpAb\Event;
 
-use PHPUnit_Framework_TestCase;
-use Zend\EventManager\EventManager;
+use Laminas\EventManager\EventManager;
+use PHPUnit\Framework\TestCase;
 
-class ZendFrameworkDispatcherTest extends PHPUnit_Framework_TestCase
+class LaminasDispatcherTest extends TestCase
 {
-    public function testGetEventManager()
+    public function testGetEventManager(): void
     {
         // Arrange
         $eventManager = new EventManager();
-        $dispatcher = new ZendFrameworkDispatcher($eventManager);
+        $dispatcher = new LaminasDispatcher($eventManager);
 
         // Act
         $result = $dispatcher->getEventManager();
@@ -27,11 +27,11 @@ class ZendFrameworkDispatcherTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($eventManager, $result);
     }
 
-    public function testDispatch()
+    public function testDispatch(): void
     {
         // Arrange
-        $eventManager = $this->getMock(EventManager::class);
-        $dispatcher = new ZendFrameworkDispatcher($eventManager);
+        $eventManager = $this->createMock(EventManager::class);
+        $dispatcher = new LaminasDispatcher($eventManager);
 
         // Assert
         $eventManager->expects($this->once())->method('trigger')->with(

@@ -11,19 +11,20 @@ namespace PhpAb\Event;
 
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
+use PHPUnit\Framework\TestCase;
 
-class ParticipationEventTest extends \PHPUnit_Framework_TestCase
+class ParticipationEventTest extends TestCase
 {
     private $test;
     private $variant;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->test = $this->getMock(TestInterface::class);
-        $this->variant = $this->getMock(VariantInterface::class);
+        $this->test = $this->createMock(TestInterface::class);
+        $this->variant = $this->createMock(VariantInterface::class);
     }
 
-    public function testGetTest()
+    public function testGetTest(): void
     {
         // Arrange
         $event = new ParticipationEvent($this->test, $this->variant, false);
@@ -35,7 +36,7 @@ class ParticipationEventTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->test, $result);
     }
 
-    public function testGetVariant()
+    public function testGetVariant(): void
     {
         // Arrange
         $event = new ParticipationEvent($this->test, $this->variant, false);
@@ -47,7 +48,7 @@ class ParticipationEventTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->variant, $result);
     }
 
-    public function testIsNotNew()
+    public function testIsNotNew(): void
     {
         // Arrange
         $event = new ParticipationEvent($this->test, $this->variant, false);
@@ -59,7 +60,7 @@ class ParticipationEventTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
-    public function testIsNew()
+    public function testIsNew(): void
     {
         // Arrange
         $event = new ParticipationEvent($this->test, $this->variant, true);

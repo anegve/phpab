@@ -9,23 +9,26 @@
 
 namespace PhpAb\Analytics\Renderer\Google;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
+class GoogleUniversalAnalyticsTest extends TestCase
 {
-    public function testGetScript()
+    public function testGetScript(): void
     {
         // Arrange
-        $gaRenderer = new GoogleUniversalAnalytics([
-            'walter' => 1,
-            'bernard' => 0
-        ]);
+        $gaRenderer = new GoogleUniversalAnalytics(
+            [
+                'walter' => 1,
+                'bernard' => 0
+            ]
+        );
 
         // Act
         $script = $gaRenderer->getScript();
 
         // Assert
-        $this->assertSame("<script>
+        $this->assertSame(
+            "<script>
 (function(){
     ga(function(tracker) {
         cxApi.setChosenVariation(1, 'walter');
@@ -38,23 +41,28 @@ class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
         tracker.send('event', 'PhpAb', 'bernard', {'nonInteraction': 1});
     });
 })();
-</script>", $script);
+</script>",
+            $script
+        );
     }
 
-    public function testGetScriptWithApiClient()
+    public function testGetScriptWithApiClient(): void
     {
         // Arrange
-        $gaRenderer = new GoogleUniversalAnalytics([
-            'walter' => 1,
-            'bernard' => 0
-        ]);
+        $gaRenderer = new GoogleUniversalAnalytics(
+            [
+                'walter' => 1,
+                'bernard' => 0
+            ]
+        );
         $gaRenderer->setApiClientInclusion(true);
 
         // Act
         $script = $gaRenderer->getScript(true);
 
         // Assert
-        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+        $this->assertSame(
+            "<script src=\"//www.google-analytics.com/cx/api.js\"></script>
 <script>
 (function(){
     ga(function(tracker) {
@@ -68,10 +76,12 @@ class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
         tracker.send('event', 'PhpAb', 'bernard', {'nonInteraction': 1});
     });
 })();
-</script>", $script);
+</script>",
+            $script
+        );
     }
 
-    public function testGetScriptEmpty()
+    public function testGetScriptEmpty(): void
     {
         // Arrange
         $gaRenderer = new GoogleUniversalAnalytics([]);
@@ -83,7 +93,7 @@ class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', $script);
     }
 
-    public function testGetParticipations()
+    public function testGetParticipations(): void
     {
         // Arrange
         $data = [

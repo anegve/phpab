@@ -11,22 +11,22 @@ namespace PhpAb\Test;
 
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class BagTest extends PHPUnit_Framework_TestCase
+class BagTest extends TestCase
 {
     private $test;
     private $participationFilter;
     private $variantChooser;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->test = $this->getMock(TestInterface::class);
-        $this->participationFilter = $this->getMock(FilterInterface::class);
-        $this->variantChooser = $this->getMock(ChooserInterface::class);
+        $this->test = $this->createMock(TestInterface::class);
+        $this->participationFilter = $this->createMock(FilterInterface::class);
+        $this->variantChooser = $this->createMock(ChooserInterface::class);
     }
 
-    public function testGetTest()
+    public function testGetTest(): void
     {
         // Arrange
         $bag = new Bag($this->test, $this->participationFilter, $this->variantChooser, []);
@@ -38,7 +38,7 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(TestInterface::class, $test);
     }
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         // Arrange
         $bag = new Bag($this->test, $this->participationFilter, $this->variantChooser, ['Walter']);
@@ -50,7 +50,7 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(['Walter'], $options);
     }
 
-    public function testGetOptionsIfNotProvided()
+    public function testGetOptionsIfNotProvided(): void
     {
         // Arrange
         $bag = new Bag($this->test, $this->participationFilter, $this->variantChooser);
@@ -62,7 +62,7 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([], $options);
     }
 
-    public function testGetParticipationFilter()
+    public function testGetParticipationFilter(): void
     {
         // Arrange
         $bag = new Bag($this->test, $this->participationFilter, $this->variantChooser);
@@ -74,7 +74,7 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(FilterInterface::class, $filter);
     }
 
-    public function testGetVariantChooser()
+    public function testGetVariantChooser(): void
     {
         // Arrange
         $bag = new Bag($this->test, $this->participationFilter, $this->variantChooser);

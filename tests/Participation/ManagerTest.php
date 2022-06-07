@@ -9,22 +9,22 @@
 
 namespace PhpAb\Participation;
 
-use PhpAb\Storage\Storage;
 use PhpAb\Storage\Adapter\Runtime;
+use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ManagerTest extends PHPUnit_Framework_TestCase
+class ManagerTest extends TestCase
 {
     private $storage;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->storage = new Storage(new Runtime());
     }
 
-    public function testCheckParticipation()
+    public function testCheckParticipation(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -36,7 +36,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
-    public function testCheckParticipatesTestSuccess()
+    public function testCheckParticipatesTestSuccess(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -49,7 +49,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesTestObjectSuccess()
+    public function testCheckParticipatesTestObjectSuccess(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -62,7 +62,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesTestVariantObjectSuccess()
+    public function testCheckParticipatesTestVariantObjectSuccess(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -75,7 +75,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesVariantSuccess()
+    public function testCheckParticipatesVariantSuccess(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -88,7 +88,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesVariantFail()
+    public function testCheckParticipatesVariantFail(): void
     {
         // Arrange
         $manager = new Manager($this->storage);
@@ -103,7 +103,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
 
     // More to come
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->storage->clear();
     }

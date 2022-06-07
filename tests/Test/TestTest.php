@@ -9,16 +9,18 @@
 
 namespace PhpAb\Test;
 
+use InvalidArgumentException;
+use PhpAb\Exception\DuplicateVariantException;
 use PhpAb\Variant\SimpleVariant;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TestTest extends PHPUnit_Framework_TestCase
+class TestTest extends TestCase
 {
     /**
-     * @covers PhpAb\Test\Test::__construct
-     * @covers PhpAb\Test\Test::getIdentifier
+     * @covers Test::__construct
+     * @covers Test::getIdentifier
      */
-    public function testConstructorAndGetIdentifierWithValidIdentifier()
+    public function testConstructorAndGetIdentifierWithValidIdentifier(): void
     {
         // Arrange
         $test = new Test('identifier');
@@ -31,13 +33,14 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::__construct
-     * @covers PhpAb\Test\Test::getIdentifier
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The provided identifier is not a valid identifier.
+     * @covers Test::__construct
+     * @covers Test::getIdentifier
      */
-    public function testConstructorAndGetIdentifierWithInvalidIdentifier()
+    public function testConstructorAndGetIdentifierWithInvalidIdentifier(): void
     {
+        $this->expectExceptionMessage("The provided identifier is not a valid identifier.");
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         // ...
 
@@ -49,10 +52,10 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::__construct
-     * @covers PhpAb\Test\Test::getVariants
+     * @covers Test::__construct
+     * @covers Test::getVariants
      */
-    public function testConstructorAndGetVariantsWithVariants()
+    public function testConstructorAndGetVariantsWithVariants(): void
     {
         // Arrange
         $variant = new SimpleVariant('identifier');
@@ -64,15 +67,18 @@ class TestTest extends PHPUnit_Framework_TestCase
         $result = $test->getVariants();
 
         // Assert
-        $this->assertEquals([
-            'identifier' => $variant
-        ], $result);
+        $this->assertEquals(
+            [
+                'identifier' => $variant
+            ],
+            $result
+        );
     }
 
     /**
-     * @covers PhpAb\Test\Test::addVariant
+     * @covers Test::addVariant
      */
-    public function testAddVariant()
+    public function testAddVariant(): void
     {
         // Arrange
         $variant = new SimpleVariant('identifier');
@@ -82,18 +88,22 @@ class TestTest extends PHPUnit_Framework_TestCase
         $test->addVariant($variant);
 
         // Assert
-        $this->assertEquals([
-            'identifier' => $variant
-        ], $test->getVariants());
+        $this->assertEquals(
+            [
+                'identifier' => $variant
+            ],
+            $test->getVariants()
+        );
     }
 
     /**
-     * @covers PhpAb\Test\Test::addVariant
-     * @expectedException PhpAb\Exception\DuplicateVariantException
-     * @expectedExceptionMessage A variant with this identifier has already been added.
+     * @covers Test::addVariant
      */
-    public function testAddVariantWithDuplicateIdentifier()
+    public function testAddVariantWithDuplicateIdentifier(): void
     {
+        $this->expectExceptionMessage("A variant with this identifier has already been added.");
+        $this->expectException(DuplicateVariantException::class);
+
         // Arrange
         $variant = new SimpleVariant('identifier');
         $test = new Test('identifier');
@@ -107,9 +117,9 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::setVariants
+     * @covers Test::setVariants
      */
-    public function testSetVariantsWithEmptyArray()
+    public function testSetVariantsWithEmptyArray(): void
     {
         // Arrange
         $test = new Test('identifier');
@@ -122,9 +132,9 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::setVariants
+     * @covers Test::setVariants
      */
-    public function testSetVariantsWithSingleVariant()
+    public function testSetVariantsWithSingleVariant(): void
     {
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
@@ -134,15 +144,18 @@ class TestTest extends PHPUnit_Framework_TestCase
         $test->setVariants([$variant1]);
 
         // Assert
-        $this->assertEquals([
-            'identifier1' => $variant1,
-        ], $test->getVariants());
+        $this->assertEquals(
+            [
+                'identifier1' => $variant1,
+            ],
+            $test->getVariants()
+        );
     }
 
     /**
-     * @covers PhpAb\Test\Test::setVariants
+     * @covers Test::setVariants
      */
-    public function testSetVariantsWithMultipleVariant()
+    public function testSetVariantsWithMultipleVariant(): void
     {
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
@@ -153,19 +166,23 @@ class TestTest extends PHPUnit_Framework_TestCase
         $test->setVariants([$variant1, $variant2]);
 
         // Assert
-        $this->assertEquals([
-            'identifier1' => $variant1,
-            'identifier2' => $variant2,
-        ], $test->getVariants());
+        $this->assertEquals(
+            [
+                'identifier1' => $variant1,
+                'identifier2' => $variant2,
+            ],
+            $test->getVariants()
+        );
     }
 
     /**
-     * @covers PhpAb\Test\Test::setVariants
-     * @expectedException PhpAb\Exception\DuplicateVariantException
-     * @expectedExceptionMessage A variant with this identifier has already been added.
+     * @covers Test::setVariants
      */
-    public function testSetVariantsWithDuplicateVariants()
+    public function testSetVariantsWithDuplicateVariants(): void
     {
+        $this->expectExceptionMessage("A variant with this identifier has already been added.");
+        $this->expectException(DuplicateVariantException::class);
+
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
         $variant2 = new SimpleVariant('identifier1');
@@ -179,9 +196,9 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::getVariant
+     * @covers Test::getVariant
      */
-    public function testGetVariant()
+    public function testGetVariant(): void
     {
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
@@ -195,9 +212,9 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::getVariant
+     * @covers Test::getVariant
      */
-    public function testGetVariantWithInvalidIdentifier()
+    public function testGetVariantWithInvalidIdentifier(): void
     {
         // Arrange
         $test = new Test('identifier');
@@ -212,7 +229,7 @@ class TestTest extends PHPUnit_Framework_TestCase
     /**
      * Testing that options passed in constructor are returned by getOptions
      */
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         // Arrange
         $options = [

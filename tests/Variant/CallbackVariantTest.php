@@ -9,11 +9,12 @@
 
 namespace PhpAb\Variant;
 
-use PhpAb\Exception\TestExecutionException;
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-class CallbackVariantTest extends \PHPUnit_Framework_TestCase
+class CallbackVariantTest extends TestCase
 {
-    public function testGetIdentifier()
+    public function testGetIdentifier(): void
     {
         // Arrange
         $variant = new CallbackVariant('name', function () {
@@ -26,7 +27,7 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('name', $identifier);
     }
 
-    public function testRunExecutesCallback()
+    public function testRunExecutesCallback(): void
     {
         // Arrange
         $action = null;
@@ -40,21 +41,20 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($variant->run());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testRunClosureThrowsException()
+    public function testRunClosureThrowsException(): void
     {
+        $this->expectException(RuntimeException::class);
+
         // Arrange
         $variant = new CallbackVariant('name', function () {
-            throw new \RuntimeException;
+            throw new RuntimeException;
         });
 
         // Act
         $variant->run();
     }
 
-    public function testRunReturnsNull()
+    public function testRunReturnsNull(): void
     {
         // Arrange
         $variant = new CallbackVariant('name', function () {

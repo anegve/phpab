@@ -9,18 +9,20 @@
 
 namespace PhpAb\Event;
 
+use PHPUnit\Framework\TestCase;
+use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
+class SymfonyBridgeTest extends TestCase
 {
     private $dispatcher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->dispatcher = new SymfonyBridge(new EventDispatcher());
     }
 
-    public function testDispatchEventWithoutListeners()
+    public function testDispatchEventWithoutListeners(): void
     {
         // Arrange
         $dispatcher = $this->dispatcher;
@@ -34,7 +36,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result2);
     }
 
-    public function testDispatchWithSingleListener()
+    public function testDispatchWithSingleListener(): void
     {
         // Arrange
         $dispatcher = $this->dispatcher;
@@ -43,7 +45,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
             return 'yolo';
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
 
         // Act
         $result = $dispatcher->dispatch('event.foo', $subject);
@@ -53,7 +55,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($subject->executed);
     }
 
-    public function testDispatchWithMultipleListenersOnOneEvent()
+    public function testDispatchWithMultipleListenersOnOneEvent(): void
     {
         // Arrange
         $dispatcher = $this->dispatcher;
@@ -65,7 +67,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
             $subject->touched++;
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
         $subject->touched = 0;
 
         // Act
@@ -75,7 +77,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $subject->touched);
     }
 
-    public function testDispatchMultipleEvents()
+    public function testDispatchMultipleEvents(): void
     {
         // Arrange
         $dispatcher = $this->dispatcher;
@@ -87,7 +89,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
             $subject->touched++;
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
         $subject->touched = 0;
 
         // Act

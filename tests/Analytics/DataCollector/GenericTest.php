@@ -9,20 +9,22 @@
 
 namespace PhpAb\Analytics\DataCollector;
 
+use DateTime;
+use InvalidArgumentException;
+use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Test\Bag;
 use PhpAb\Test\Test;
-use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GenericTest extends PHPUnit_Framework_TestCase
+class GenericTest extends TestCase
 {
     /**
      * Testing that getSubscribedEvents() will return an array
      * containing the closure to be executed on "phpab.participation.variant_run"
      */
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
         // Arrange
         $collector = new Generic();
@@ -37,33 +39,29 @@ class GenericTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that addParticipation() accepts only string parameters
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testAddParticipationInvalidTestIdentifier()
+    public function testAddParticipationInvalidTestIdentifier(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
 
         // Act
         $collector->addParticipation(987, 1);
-
         // Assert
     }
 
     /**
      * Testing that addParticipation() accepts only string parameters
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testAddParticipationInvalidVariationIndexRange()
+    public function testAddParticipationInvalidVariationIndexRange(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
 
         // Act
         $collector->addParticipation('walter', -1);
-
         // Assert
     }
 
@@ -71,7 +69,7 @@ class GenericTest extends PHPUnit_Framework_TestCase
      * Testing that getTestsData() returns the data injected
      * via addParticipation()
      */
-    public function testOnRegisterParticipation()
+    public function testOnRegisterParticipation(): void
     {
         // Arrange
         $collector = new Generic();
@@ -94,29 +92,26 @@ class GenericTest extends PHPUnit_Framework_TestCase
     /**
      * Testing that the closure returned by getSubscribedEvents()
      * requires a non empty array
-     *
-     * @expectedException \InvalidArgumentException
      */
-    public function testGetSubscribedEventsEmptyOptions()
+    public function testGetSubscribedEventsEmptyOptions(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
         $event = $collector->getSubscribedEvents();
 
         // Act
         call_user_func($event['phpab.participation.variant_run'], []);
-
         // Assert
     }
 
     /**
      * Testing that the closure returned by getSubscribedEvents()
      * requires an array with size > 1
-     *
-     * @expectedException \InvalidArgumentException
      */
-    public function testGetSubscribedEventsNoBag()
+    public function testGetSubscribedEventsNoBag(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
         $event = $collector->getSubscribedEvents();
@@ -128,18 +123,16 @@ class GenericTest extends PHPUnit_Framework_TestCase
                 0 => 'foo'
             ]
         );
-
         // Assert
     }
 
     /**
      * Testing that the closure returned by getSubscribedEvents()
      * requires a Bag object passed in key 1
-     *
-     * @expectedException \InvalidArgumentException
      */
-    public function testGetSubscribedEventsNoBagInstance()
+    public function testGetSubscribedEventsNoBagInstance(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
         $event = $collector->getSubscribedEvents();
@@ -149,21 +142,19 @@ class GenericTest extends PHPUnit_Framework_TestCase
             $event['phpab.participation.variant_run'],
             [
                 0 => 'foo',
-                1 => new \DateTime
+                1 => new DateTime
             ]
         );
-
         // Assert
     }
 
     /**
      * Testing that the closure returned by getSubscribedEvents()
      * requires an array with size > 2
-     *
-     * @expectedException \InvalidArgumentException
      */
-    public function testGetSubscribedEventsNoVariant()
+    public function testGetSubscribedEventsNoVariant(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
         $event = $collector->getSubscribedEvents();
@@ -181,7 +172,6 @@ class GenericTest extends PHPUnit_Framework_TestCase
                 1 => $bag
             ]
         );
-
         // Assert
     }
 
@@ -189,11 +179,10 @@ class GenericTest extends PHPUnit_Framework_TestCase
      * Testing that the closure returned by getSubscribedEvents()
      * requires an array with an instance of VariantInterface
      * in key 2
-     *
-     * @expectedException \InvalidArgumentException
      */
-    public function testGetSubscribedEventsNoVariantInstance()
+    public function testGetSubscribedEventsNoVariantInstance(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         // Arrange
         $collector = new Generic();
         $eventCallback = $collector->getSubscribedEvents();
@@ -209,10 +198,9 @@ class GenericTest extends PHPUnit_Framework_TestCase
             [
                 0 => 'foo',
                 1 => $bag,
-                2 => new \DateTime
+                2 => new DateTime
             ]
         );
-
         // Assert
     }
 
@@ -220,7 +208,7 @@ class GenericTest extends PHPUnit_Framework_TestCase
      * Testing that the closure returned by getSubscribedEvents()
      * fills correctly the participation array
      */
-    public function testRunEvent()
+    public function testRunEvent(): void
     {
         // Arrange
         $collector = new Generic();

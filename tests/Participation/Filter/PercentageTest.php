@@ -9,14 +9,15 @@
 
 namespace PhpAb\Participation\Filter;
 
+use InvalidArgumentException;
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class PercentageTest extends PHPUnit_Framework_TestCase
+class PercentageTest extends TestCase
 {
-    public function testShouldParticipateWithFullPropability()
+    public function testShouldParticipateWithFullPropability(): void
     {
         // Arrange
         $lottery = new Percentage(100);
@@ -28,7 +29,7 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($participates);
     }
 
-    public function testShouldParticipateWithZeroPropability()
+    public function testShouldParticipateWithZeroPropability(): void
     {
         // Arrange
         $lottery = new Percentage(0);
@@ -40,7 +41,7 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($participates);
     }
 
-    public function testShouldParticipateWithCustomPropabilityAndPositiveResult()
+    public function testShouldParticipateWithCustomPropabilityAndPositiveResult(): void
     {
         // Arrange
         // Override mt_rand
@@ -60,7 +61,7 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($participates);
     }
 
-    public function testShouldParticipateWithCustomPropabilityAndNegativeResult()
+    public function testShouldParticipateWithCustomPropabilityAndNegativeResult(): void
     {
         // Arrange
         // Override mt_rand
@@ -80,11 +81,10 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($participates);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testShouldParticipateWithOverPercentage()
+    public function testShouldParticipateWithOverPercentage(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $lottery = new Percentage(101);
 
@@ -92,11 +92,10 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $lottery->shouldParticipate();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testShouldAcceptIntergerOnly()
+    public function testShouldAcceptIntergerOnly(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $lottery = new Percentage('Walter');
 
@@ -104,11 +103,10 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $lottery->shouldParticipate();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testShouldParticipateWithUnderPercentage()
+    public function testShouldParticipateWithUnderPercentage(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $lottery = new Percentage(-1);
 
@@ -116,7 +114,7 @@ class PercentageTest extends PHPUnit_Framework_TestCase
         $lottery->shouldParticipate();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // disable all mocked functions
         Mock::disableAll();

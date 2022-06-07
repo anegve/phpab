@@ -9,29 +9,29 @@
 
 namespace PhpAb\Variant\Chooser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class StaticChooserTest extends PHPUnit_Framework_TestCase
+class StaticChooserTest extends TestCase
 {
-    public function testChooseStatic()
+    public function testChooseStatic(): void
     {
         // Arrange
         $chooser = new StaticChooser(3);
 
         // Act
-        $result = $chooser->chooseVariant([1,2,3,4,5,6]);
+        $result = $chooser->chooseVariant([1, 2, 3, 4, 5, 6]);
 
         // Assert
         $this->assertEquals(4, $result);
     }
 
-    public function testChooseStaticFails()
+    public function testChooseStaticFails(): void
     {
         // Arrange
         $chooser = new StaticChooser(3);
 
         // Act
-        $result = $chooser->chooseVariant([1,2]);
+        $result = $chooser->chooseVariant([1, 2]);
 
         // Assert
         $this->assertNull($result);

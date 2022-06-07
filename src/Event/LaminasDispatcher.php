@@ -9,14 +9,14 @@
 
 namespace PhpAb\Event;
 
-use Zend\EventManager\EventManager;
+use Laminas\EventManager\EventManager;
 
 /**
  * A dispatcher that uses the Zend Framework Event manager to dispatch events.
  *
  * @package PhpAb
  */
-class ZendFrameworkDispatcher implements DispatcherInterface
+class LaminasDispatcher implements DispatcherInterface
 {
     /**
      * The event manager used to dispatch events.

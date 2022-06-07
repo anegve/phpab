@@ -9,14 +9,14 @@
 
 namespace PhpAb\Storage\Adapter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RuntimeTest extends PHPUnit_Framework_TestCase
+class RuntimeTest extends TestCase
 {
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::__construct
+     * @covers Runtime::__construct
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -25,13 +25,13 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
         $result = $storage->all();
 
         // Assert
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::has
+     * @covers Runtime::has
      */
-    public function testHasWithValidEntry()
+    public function testHasWithValidEntry(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -45,9 +45,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::has
+     * @covers Runtime::has
      */
-    public function testHasWithInvalidEntry()
+    public function testHasWithInvalidEntry(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -60,9 +60,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::has
+     * @covers Runtime::has
      */
-    public function testHasWithZeroEntry()
+    public function testHasWithZeroEntry(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -76,9 +76,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::get
+     * @covers Runtime::get
      */
-    public function testGetValidEntry()
+    public function testGetValidEntry(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -92,9 +92,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::get
+     * @covers Runtime::get
      */
-    public function testGetInvalidEntry()
+    public function testGetInvalidEntry(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -107,9 +107,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::set
+     * @covers Runtime::set
      */
-    public function testSet()
+    public function testSet(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -122,9 +122,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::all
+     * @covers Runtime::all
      */
-    public function testAllWithEmptyStorage()
+    public function testAllWithEmptyStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -137,9 +137,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::all
+     * @covers Runtime::all
      */
-    public function testAllWithFilledStorage()
+    public function testAllWithFilledStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -150,16 +150,19 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
         $result = $storage->all();
 
         // Assert
-        $this->assertEquals([
-            'identifier1' => 'participation1',
-            'identifier2' => 'participation2',
-        ], $result);
+        $this->assertEquals(
+            [
+                'identifier1' => 'participation1',
+                'identifier2' => 'participation2',
+            ],
+            $result
+        );
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::remove
+     * @covers Runtime::remove
      */
-    public function testRemoveWithEmptyStorage()
+    public function testRemoveWithEmptyStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -172,9 +175,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::remove
+     * @covers Runtime::remove
      */
-    public function testRemoveWithFilledStorage()
+    public function testRemoveWithFilledStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -189,9 +192,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::clear
+     * @covers Runtime::clear
      */
-    public function testClearEmptyStorage()
+    public function testClearEmptyStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -204,9 +207,9 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Adapter\Runtime::clear
+     * @covers Runtime::clear
      */
-    public function testClearFilledStorage()
+    public function testClearFilledStorage(): void
     {
         // Arrange
         $storage = new Runtime();
@@ -217,10 +220,13 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
         $result = $storage->clear();
 
         // Assert
-        $this->assertEquals([
-            'identifier1' => 'participation1',
-            'identifier2' => 'participation2',
-        ], $result);
+        $this->assertEquals(
+            [
+                'identifier1' => 'participation1',
+                'identifier2' => 'participation2',
+            ],
+            $result
+        );
         $this->assertCount(0, $storage->all());
     }
 }

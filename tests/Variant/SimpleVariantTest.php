@@ -9,9 +9,11 @@
 
 namespace PhpAb\Variant;
 
-class SimpleVariantTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SimpleVariantTest extends TestCase
 {
-    public function testGetIdentifier()
+    public function testGetIdentifier(): void
     {
         // Arrange
         $variant = new SimpleVariant('name');
@@ -24,7 +26,7 @@ class SimpleVariantTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testRunReturnsNull()
+    public function testRunReturnsNull(): void
     {
         // Arrange
         $variant = new SimpleVariant('name');

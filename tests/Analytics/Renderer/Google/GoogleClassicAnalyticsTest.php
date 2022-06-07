@@ -9,23 +9,24 @@
 
 namespace PhpAb\Analytics\Renderer\Google;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
+class GoogleClassicAnalyticsTest extends TestCase
 {
-    public function testGetScript()
+    public function testGetScript(): void
     {
         // Arrange
         $gaRenderer = new GoogleClassicAnalytics([
-            'walter' => 1,
-            'bernard' => 0
-        ]);
+                                                     'walter' => 1,
+                                                     'bernard' => 0
+                                                 ]);
 
         // Act
         $script = $gaRenderer->getScript();
 
         // Assert
-        $this->assertSame("<script>
+        $this->assertSame(
+            "<script>
 (function(){
     ga(function(tracker) {
         cxApi.setChosenVariation(1, 'walter');
@@ -38,23 +39,26 @@ class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
         _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
     });
 })();
-</script>", $script);
+</script>",
+            $script
+        );
     }
 
-    public function testGetScriptWithApiClient()
+    public function testGetScriptWithApiClient(): void
     {
         // Arrange
         $gaRenderer = new GoogleClassicAnalytics([
-            'walter' => 1,
-            'bernard' => 0
-        ]);
+                                                     'walter' => 1,
+                                                     'bernard' => 0
+                                                 ]);
         $gaRenderer->setApiClientInclusion(true);
 
         // Act
         $script = $gaRenderer->getScript(true);
 
         // Assert
-        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+        $this->assertSame(
+            "<script src=\"//www.google-analytics.com/cx/api.js\"></script>
 <script>
 (function(){
     ga(function(tracker) {
@@ -68,10 +72,12 @@ class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
         _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
     });
 })();
-</script>", $script);
+</script>",
+            $script
+        );
     }
 
-    public function testGetScriptEmpty()
+    public function testGetScriptEmpty(): void
     {
         // Arrange
         $gaRenderer = new GoogleClassicAnalytics([]);
@@ -83,7 +89,7 @@ class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', $script);
     }
 
-    public function testGetParticipations()
+    public function testGetParticipations(): void
     {
         // Arrange
         $data = [

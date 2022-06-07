@@ -9,16 +9,18 @@
 
 namespace PhpAb\Storage\Adapter;
 
-use PHPUnit_Framework_TestCase;
-use phpmock\MockBuilder;
-use phpmock\Mock;
+use InvalidArgumentException;
 use phpmock\functions\FixedValueFunction;
+use phpmock\Mock;
+use phpmock\MockBuilder;
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * During the execution of some of these tests,
  * global functions might be overwritten
  */
-class CookieTest extends PHPUnit_Framework_TestCase
+class CookieTest extends TestCase
 {
     /**
      * @var array Default test results used for test suite
@@ -35,13 +37,13 @@ class CookieTest extends PHPUnit_Framework_TestCase
      * Reset global cookies array and disable
      * global function mocks
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         Mock::disableAll();
     }
 
-    private function setMockHeadersSentReturnValue($returnValue)
+    private function setMockHeadersSentReturnValue($returnValue): void
     {
         if ($this->mockHeadersSent) {
             $this->mockHeadersSent->disable();
@@ -55,7 +57,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->mockHeadersSent->enable();
     }
 
-    private function setSetCookiesReturnValue($returnValue)
+    private function setSetCookiesReturnValue($returnValue): void
     {
         if ($this->mockSetCookies) {
             $this->mockSetCookies->disable();
@@ -69,7 +71,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->mockSetCookies->enable();
     }
 
-    private function setFilterInputArrayReturnValue($returnValue)
+    private function setFilterInputArrayReturnValue($returnValue): void
     {
         if ($this->mockFilterInputArray) {
             $this->mockFilterInputArray->disable();
@@ -84,7 +86,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->mockFilterInputArray->enable();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -95,11 +97,11 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that constructor's first argument can only be non empty strings
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionNameNotString()
+    public function testConstructorExceptionNameNotString(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         new Cookie(123);
 
@@ -110,11 +112,11 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that constructor's first argument can only be non empty strings
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionNameEmpty()
+    public function testConstructorExceptionNameEmpty(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         new Cookie('');
 
@@ -125,11 +127,11 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that constructor's second argument can only be an integer
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionTtlNotInt()
+    public function testConstructorExceptionTtlNotInt(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         new Cookie('chars', 'bar');
 
@@ -140,24 +142,23 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that has() accepts only non empty strings
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testHasException()
+    public function testHasException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->has([123]);
-
         // Assert
     }
 
     /**
      * Test that parseExistingCookie() will set an empty array if cookie is empty
      */
-    public function testParseExistingCookieEmpty()
+    public function testParseExistingCookieEmpty(): void
     {
         // Arrange
         $this->setFilterInputArrayReturnValue([]);
@@ -173,7 +174,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     /**
      * Test that parseExistingCookie() will set an empty array if cookie is not an array
      */
-    public function testParseExistingCookieNotArray()
+    public function testParseExistingCookieNotArray(): void
     {
         // Arrange
         $this->setFilterInputArrayReturnValue(['chars' => 'this is not a proper serialized array']);
@@ -189,7 +190,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     /**
      * Test that parseExistingCookie() will set an empty array if cookie is a wrong json object
      */
-    public function testParseExistingCookieNonValidJson()
+    public function testParseExistingCookieNonValidJson(): void
     {
         // Arrange
         $this->setFilterInputArrayReturnValue(['chars' => '{"walter": "white","bernard"}']);
@@ -205,7 +206,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     /**
      * Test values returnd by has()
      */
-    public function testHas()
+    public function testHas(): void
     {
         // Arrange
         $cookie = new Cookie('chars');
@@ -221,24 +222,23 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that get() accepts only non empty strings
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testGetException()
+    public function testGetException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->get([123]);
-
         // Assert
     }
 
     /**
      * Testing values returned by get()
      */
-    public function testGet()
+    public function testGet(): void
     {
         // Arrange
         $cookie = new Cookie('chars');
@@ -254,40 +254,38 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that set()'s first argument can only be a non empty string
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testSetExceptionIdentifierNotString()
+    public function testSetExceptionIdentifierNotString(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->set(123, 'black');
-
         // Assert
     }
 
     /**
      * Testing that set()'s second argument can only be a non empty string
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testSetExceptionParticipationEmpty()
+    public function testSetExceptionParticipationEmpty(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->set('walter', '');
-
         // Assert
     }
 
     /**
      * Testing that values passed to set() are the ones returned by get()
      */
-    public function testSet()
+    public function testSet(): void
     {
         // Arrange
         $cookie = new Cookie('chars');
@@ -301,24 +299,24 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that set() will throw exception of if headers are already sent
-     * @expectedException RuntimeException
      */
-    public function testSetExceptionHeadersSent()
+    public function testSetExceptionHeadersSent(): void
     {
+        $this->expectException(RuntimeException::class);
+
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->set('walter', 'black');
-
         // Assert
     }
 
     /**
      * Test that all() returns all test values
      */
-    public function testAll()
+    public function testAll(): void
     {
         // Arrange
         $cookie = new Cookie('chars');
@@ -330,11 +328,11 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that remove() only accepts non empty strings
-     *
-     * @expectedException InvalidArgumentException
      */
-    public function testRemoveExceptionIdentifierNotString()
+    public function testRemoveExceptionIdentifierNotString(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         // Arrange
         $cookie = new Cookie('chars');
 
@@ -344,11 +342,11 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that remove will throw exception if headers are already sent
-     *
-     * @expectedException RuntimeException
      */
-    public function testRemoveExceptionHeadersSent()
+    public function testRemoveExceptionHeadersSent(): void
     {
+        $this->expectException(RuntimeException::class);
+
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
         $cookie = new Cookie('chars');
@@ -360,9 +358,8 @@ class CookieTest extends PHPUnit_Framework_TestCase
     /**
      * Tet that remove() removes tests values from storage
      */
-    public function testRemove()
+    public function testRemove(): void
     {
-
         // Arrange
         $cookie = new Cookie('chars');
 
@@ -376,24 +373,24 @@ class CookieTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that clear() throws exception if headers are already sent
-     * @expectedException RuntimeException
      */
-    public function testClearExceptionHeadersSent()
+    public function testClearExceptionHeadersSent(): void
     {
+        $this->expectException(RuntimeException::class);
+
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
         $cookie = new Cookie('chars');
 
         // Act
         $cookie->clear();
-
         // Assert
     }
 
     /**
      * Testing that clear() resets values of storage
      */
-    public function testClear()
+    public function testClear(): void
     {
         // Arrange
         $cookie = new Cookie('chars');

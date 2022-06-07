@@ -9,11 +9,12 @@
 
 namespace PhpAb\Event;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
-class DispatcherTest extends PHPUnit_Framework_TestCase
+class DispatcherTest extends TestCase
 {
-    public function testDispatchEventWithoutListeners()
+    public function testDispatchEventWithoutListeners(): void
     {
         // Arrange
         $dispatcher = new Dispatcher();
@@ -27,7 +28,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $this->assertNull($result2);
     }
 
-    public function testDispatchWithSingleListener()
+    public function testDispatchWithSingleListener(): void
     {
         // Arrange
         $dispatcher = new Dispatcher();
@@ -36,7 +37,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
             return 'yolo';
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
 
         // Act
         $result = $dispatcher->dispatch('event.foo', $subject);
@@ -46,25 +47,27 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($subject->executed);
     }
 
-    public function testDispatchSubscriberNotAllDispatched()
+    public function testDispatchSubscriberNotAllDispatched(): void
     {
         // Arrange
         $callable = function ($subject) {
             $subject->touched++;
         };
 
-        $subscriber = $this->getMock(SubscriberInterface::class);
+        $subscriber = $this->createMock(SubscriberInterface::class);
         $subscriber
             ->method('getSubscribedEvents')
-            ->willReturn([
-                'event.foo' => $callable,
-                'event.bar' => $callable,
-            ]);
+            ->willReturn(
+                [
+                    'event.foo' => $callable,
+                    'event.bar' => $callable,
+                ]
+            );
 
         $dispatcher = new Dispatcher();
         $dispatcher->addSubscriber($subscriber);
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
         $subject->touched = 0;
 
         // Act
@@ -74,7 +77,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $subject->touched);
     }
 
-    public function testDispatchWithMultipleListenersOnOneEvent()
+    public function testDispatchWithMultipleListenersOnOneEvent(): void
     {
         // Arrange
         $dispatcher = new Dispatcher();
@@ -86,7 +89,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
             $subject->touched++;
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
         $subject->touched = 0;
 
         // Act
@@ -96,7 +99,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $subject->touched);
     }
 
-    public function testDispatchMultipleEvents()
+    public function testDispatchMultipleEvents(): void
     {
         // Arrange
         $dispatcher = new Dispatcher();
@@ -108,7 +111,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
             $subject->touched++;
         });
 
-        $subject = new \stdClass();
+        $subject = new stdClass();
         $subject->touched = 0;
 
         // Act
