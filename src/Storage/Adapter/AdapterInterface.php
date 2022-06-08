@@ -31,24 +31,24 @@ interface AdapterInterface
     /**
      * Returns the value of a string identified element
      *
-     * @param mixed $identifier Element identifier
+     * @param string $identifier Element identifier
      *
-     * @return mixed The value of element
+     * @return string|null The value of element
      */
-    public function get(string $identifier): mixed;
+    public function get(string $identifier): ?string;
 
     /**
      * Sets the value of a string identified element
      *
      * @param string $identifier Element identifier
-     * @param mixed $value Value of element to be set
+     * @param string|null $value Value of element to be set
      *
-     * @return bool If elemnt has been successfuly set
+     * @return bool If element has been successfully set
      */
-    public function set(string $identifier, mixed $value): bool;
+    public function set(string $identifier, ?string $value): bool;
 
     /**
-     * Returns the concent of all the elements
+     * Returns the content of all the elements
      *
      * @return array Content of all elements
      */
@@ -59,9 +59,9 @@ interface AdapterInterface
      *
      * @param string $identifier Element identifier
      *
-     * @return mixed value that has been removed
+     * @return string|null value that has been removed
      */
-    public function remove(string $identifier): mixed;
+    public function remove(string $identifier): ?string;
 
     /**
      * Clears all the elements

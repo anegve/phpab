@@ -43,7 +43,7 @@ class Storage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $identifier)
+    public function get(string $identifier): ?string
     {
         return $this->adapter->get($identifier);
     }
@@ -51,7 +51,7 @@ class Storage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function set(string $identifier, mixed $participation)
+    public function set(string $identifier, ?string $participation): void
     {
         $this->adapter->set($identifier, $participation);
     }

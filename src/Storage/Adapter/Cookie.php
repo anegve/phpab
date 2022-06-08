@@ -112,7 +112,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $identifier): mixed
+    public function get(string $identifier): ?string
     {
         if (!$this->has($identifier)) {
             return null;
@@ -124,7 +124,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function set(string $identifier, mixed $value): bool
+    public function set(string $identifier, ?string $value): bool
     {
         $this->has($identifier);
 
@@ -154,7 +154,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function remove(string $identifier): mixed
+    public function remove(string $identifier): ?string
     {
         $this->has($identifier);
 

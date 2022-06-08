@@ -26,7 +26,7 @@ interface StorageInterface
      *
      * @param string $identifier The tests identifier
      * @return bool true if the test participation is defined, false otherwise
-     *@throws InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function has(string $identifier): bool;
 
@@ -34,19 +34,21 @@ interface StorageInterface
      * Returns the participation value (Variant or false).
      *
      * @param string $identifier The tests identifier name
-     * @return mixed
-     *@throws InvalidArgumentException
+     * @return string|null
+     *
+     * @throws InvalidArgumentException
      */
-    public function get(string $identifier);
+    public function get(string $identifier): ?string;
 
     /**
      * Sets participation value for a test
      *
      * @param string $identifier The tests identifier
-     * @param mixed  $participation The participated variant
+     * @param string|null $participation The participated variant
+     *
      * @throws InvalidArgumentException
      */
-    public function set(string $identifier, mixed $participation);
+    public function set(string $identifier, ?string $participation): void;
 
     /**
      * Clears out state for a test.
