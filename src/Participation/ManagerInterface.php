@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -8,6 +11,9 @@
  */
 
 namespace PhpAb\Participation;
+
+use PhpAb\Test\TestInterface;
+use PhpAb\Variant\VariantInterface;
 
 /**
  * The interface that should be implemented by participation managers.
@@ -22,7 +28,7 @@ interface ManagerInterface
      * @param TestInterface|string $test The identifier of the test to get the variant for.
      * @return string|null Returns the identifier of the variant or null if not participating.
      */
-    public function getParticipatingVariant($test);
+    public function getParticipatingVariant(TestInterface|string $test): ?string;
 
     /**
      * Check if the user participates in a test or a specific variant of the test
@@ -31,7 +37,7 @@ interface ManagerInterface
      * @param VariantInterface|string|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
-    public function participates($test, $variant = null);
+    public function participates(TestInterface|string $test, string|VariantInterface $variant = null): bool|string;
 
     /**
      * Sets the participation to a test with the participation at a specific variant.
@@ -40,5 +46,5 @@ interface ManagerInterface
      * @param VariantInterface|string|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */
-    public function participate($test, $variant);
+    public function participate(TestInterface|string $test, string|VariantInterface|null $variant): void;
 }

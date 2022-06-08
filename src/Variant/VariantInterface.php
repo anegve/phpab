@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,7 +12,7 @@
 
 namespace PhpAb\Variant;
 
-use PhpAb\Exception\TestExecutionException;
+use PhpAb\Exception\TestException;
 
 /**
  * The interface that should be implemented by all variants.
@@ -24,12 +27,12 @@ interface VariantInterface
      *
      * @return string
      */
-    public function getIdentifier();
+    public function getIdentifier(): string;
 
     /**
      * Run the variant
      *
-     * @throws TestExecutionException
+     * @throws TestException
      */
-    public function run();
+    public function run(): void;
 }

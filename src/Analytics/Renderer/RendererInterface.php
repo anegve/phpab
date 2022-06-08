@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,5 +24,5 @@ interface RendererInterface
      *
      * @return array Returns the map with participations.
      */
-    public function getParticipations();
+    public function getParticipations(): array;
 }

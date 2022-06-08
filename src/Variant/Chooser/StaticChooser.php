@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,16 +24,16 @@ class StaticChooser implements ChooserInterface
     /**
      * The index of the variant to use.
      *
-     * @var int
+     * @var mixed
      */
-    private $choice;
+    private mixed $choice;
 
     /**
      * Initializes a new instance of this class.
      *
-     * @param int $choice
+     * @param mixed $choice
      */
-    public function __construct($choice)
+    public function __construct(mixed $choice)
     {
         $this->choice = $choice;
     }
@@ -40,12 +43,8 @@ class StaticChooser implements ChooserInterface
      *
      * @param VariantInterface[] $variants Variants to choose from
      */
-    public function chooseVariant($variants)
+    public function chooseVariant(array $variants): ?VariantInterface
     {
-        if (array_key_exists($this->choice, $variants)) {
-            return $variants[$this->choice];
-        }
-
-        return null;
+        return $variants[$this->choice] ?? null;
     }
 }

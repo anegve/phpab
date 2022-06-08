@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -17,6 +20,7 @@ use PhpAb\Test\Test;
 use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class GenericTest extends TestCase
 {
@@ -42,7 +46,7 @@ class GenericTest extends TestCase
      */
     public function testAddParticipationInvalidTestIdentifier(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         // Arrange
         $collector = new Generic();
 
@@ -56,7 +60,7 @@ class GenericTest extends TestCase
      */
     public function testAddParticipationInvalidVariationIndexRange(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
         // Arrange
         $collector = new Generic();
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -19,20 +22,20 @@ class Storage implements StorageInterface
     /**
      * @var AdapterInterface
      */
-    private $adapter;
+    private AdapterInterface $adapter;
 
     /**
-     * @param AdapterInterface $adpterInterface
+     * @param AdapterInterface $adapterInterface
      */
-    public function __construct(AdapterInterface $adpterInterface)
+    public function __construct(AdapterInterface $adapterInterface)
     {
-        $this->adapter = $adpterInterface;
+        $this->adapter = $adapterInterface;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return $this->adapter->has($identifier);
     }
@@ -40,7 +43,7 @@ class Storage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function get($identifier)
+    public function get(string $identifier)
     {
         return $this->adapter->get($identifier);
     }
@@ -48,7 +51,7 @@ class Storage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function set($identifier, $participation)
+    public function set(string $identifier, mixed $participation)
     {
         $this->adapter->set($identifier, $participation);
     }
@@ -56,7 +59,7 @@ class Storage implements StorageInterface
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): array
     {
         return $this->adapter->clear();
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -8,6 +11,8 @@
  */
 
 namespace PhpAb\Storage;
+
+use InvalidArgumentException;
 
 /**
  * Stores the participation state of the user
@@ -20,19 +25,19 @@ interface StorageInterface
      * Checks if the test has a participation set.
      *
      * @param string $identifier The tests identifier
-     * @throws InvalidArgumentException
      * @return bool true if the test participation is defined, false otherwise
+     *@throws InvalidArgumentException
      */
-    public function has($identifier);
+    public function has(string $identifier): bool;
 
     /**
      * Returns the participation value (Variant or false).
      *
      * @param string $identifier The tests identifier name
-     * @throws InvalidArgumentException
      * @return mixed
+     *@throws InvalidArgumentException
      */
-    public function get($identifier);
+    public function get(string $identifier);
 
     /**
      * Sets participation value for a test
@@ -41,12 +46,12 @@ interface StorageInterface
      * @param mixed  $participation The participated variant
      * @throws InvalidArgumentException
      */
-    public function set($identifier, $participation);
+    public function set(string $identifier, mixed $participation);
 
     /**
      * Clears out state for a test.
      *
      * @return mixed Whatever data was contained.
      */
-    public function clear();
+    public function clear(): mixed;
 }

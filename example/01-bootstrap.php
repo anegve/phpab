@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -8,17 +9,17 @@
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhpAb\Storage\Adapter\Cookie;
-use PhpAb\Storage\Storage;
-use PhpAb\Participation\Manager;
 use PhpAb\Analytics\DataCollector\Google;
+use PhpAb\Analytics\Renderer\Google\GoogleUniversalAnalytics;
+use PhpAb\Engine\Engine;
 use PhpAb\Event\Dispatcher;
 use PhpAb\Participation\Filter\Percentage;
-use PhpAb\Variant\Chooser\RandomChooser;
-use PhpAb\Engine\Engine;
+use PhpAb\Participation\Manager;
+use PhpAb\Storage\Adapter\Cookie;
+use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
+use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
-use PhpAb\Analytics\Renderer\Google\GoogleUniversalAnalytics;
 
 // Create a Storage and its Adapter
 $adapter = new Cookie('phpab');
@@ -45,19 +46,22 @@ $engine = new Engine($manager, $dispatcher, $filter, $chooser);
 
 // Create a tests and its variants
 $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'exp1']);
-$test->addVariant(new SimpleVariant('_control'));
-$test->addVariant(new SimpleVariant('_variant1'));
-$test->addVariant(new SimpleVariant('_variant2'));
+$test
+    ->addVariant(new SimpleVariant('_control'))
+    ->addVariant(new SimpleVariant('_variant1'))
+    ->addVariant(new SimpleVariant('_variant2'));
 
 // Create a second test and its variants
 $test2 = new Test('bar_test', [], [Google::EXPERIMENT_ID => 'exp2']);
-$test2->addVariant(new SimpleVariant('_control'));
-$test2->addVariant(new SimpleVariant('_variant1'));
-$test2->addVariant(new SimpleVariant('_variant2'));
+$test2
+    ->addVariant(new SimpleVariant('_control'))
+    ->addVariant(new SimpleVariant('_variant1'))
+    ->addVariant(new SimpleVariant('_variant2'));
 
 // Add the tests to the Engine
-$engine->addTest($test);
-$engine->addTest($test2);
+$engine
+    ->addTest($test)
+    ->addTest($test2);
 
 // Pseudo: if($user->isAdmin)
 // If the user is admin, he should not participate at the test

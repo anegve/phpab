@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -24,5 +27,5 @@ interface ChooserInterface
      * @param VariantInterface[] $variants Variants to choose from
      * @return VariantInterface|null the chosen Variant or null if none given
      */
-    public function chooseVariant($variants);
+    public function chooseVariant(array $variants): ?VariantInterface;
 }

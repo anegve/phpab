@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -14,6 +17,7 @@ use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class PercentageTest extends TestCase
 {
@@ -44,10 +48,10 @@ class PercentageTest extends TestCase
     public function testShouldParticipateWithCustomPropabilityAndPositiveResult(): void
     {
         // Arrange
-        // Override mt_rand
+        // Override random_int
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-            ->setName('mt_rand')
+            ->setName('random_int')
             ->setFunctionProvider(new FixedValueFunction(0));
         $mock = $builder->build();
         $mock->enable();
@@ -64,10 +68,10 @@ class PercentageTest extends TestCase
     public function testShouldParticipateWithCustomPropabilityAndNegativeResult(): void
     {
         // Arrange
-        // Override mt_rand
+        // Override random_int
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-            ->setName('mt_rand')
+            ->setName('random_int')
             ->setFunctionProvider(new FixedValueFunction(99));
         $mock = $builder->build();
         $mock->enable();
@@ -94,7 +98,7 @@ class PercentageTest extends TestCase
 
     public function testShouldAcceptIntergerOnly(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         $lottery = new Percentage('Walter');

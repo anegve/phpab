@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -23,7 +26,7 @@ interface AdapterInterface
      *
      * @return bool If element exists
      */
-    public function has($identifier);
+    public function has(string $identifier): bool;
 
     /**
      * Returns the value of a string identified element
@@ -32,7 +35,7 @@ interface AdapterInterface
      *
      * @return mixed The value of element
      */
-    public function get($identifier);
+    public function get(string $identifier): mixed;
 
     /**
      * Sets the value of a string identified element
@@ -42,14 +45,14 @@ interface AdapterInterface
      *
      * @return bool If elemnt has been successfuly set
      */
-    public function set($identifier, $value);
+    public function set(string $identifier, mixed $value): bool;
 
     /**
      * Returns the concent of all the elements
      *
      * @return array Content of all elements
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Remove the content of a string identified element
@@ -58,12 +61,12 @@ interface AdapterInterface
      *
      * @return mixed value that has been removed
      */
-    public function remove($identifier);
+    public function remove(string $identifier): mixed;
 
     /**
      * Clears all the elements
      *
      * @return array All the content that has been cleared
      */
-    public function clear();
+    public function clear(): array;
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -23,14 +26,14 @@ interface TestInterface
      *
      * @return string
      */
-    public function getIdentifier();
+    public function getIdentifier(): string;
 
     /**
      * Get all variants for this test.
      *
      * @return VariantInterface[]
      */
-    public function getVariants();
+    public function getVariants(): array;
 
     /**
      * Get a single variant for this test
@@ -38,5 +41,5 @@ interface TestInterface
      * @param string $identifier The identifier of the variant to get.
      * @return VariantInterface|null
      */
-    public function getVariant($identifier);
+    public function getVariant(string $identifier): ?VariantInterface;
 }

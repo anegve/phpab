@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -26,14 +29,14 @@ class SimpleVariant implements VariantInterface
      *
      * @var string
      */
-    private $identifier;
+    private string $identifier;
 
     /**
      * Initializes a new instance of this class.
      *
      * @param string $identifier The Identifier of the Variant
      */
-    public function __construct($identifier)
+    public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
     }
@@ -41,7 +44,7 @@ class SimpleVariant implements VariantInterface
     /**
      * {@inheritDoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -49,7 +52,7 @@ class SimpleVariant implements VariantInterface
     /**
      * {@inheritDoc}
      */
-    public function run()
+    public function run(): void
     {
         // no return to comply with the interface
     }

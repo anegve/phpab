@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -22,7 +25,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
      *
      * @var array
      */
-    private $participations = [];
+    private array $participations;
 
     /**
      * Initializes a new instance of this class.
@@ -37,7 +40,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
     /**
      * {@inheritDoc}
      */
-    public function getScript()
+    public function getScript(): string
     {
         if (empty($this->participations)) {
             return '';
@@ -68,7 +71,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
     /**
      * {@inheritDoc}
      */
-    public function getParticipations()
+    public function getParticipations(): array
     {
 
         return $this->participations;

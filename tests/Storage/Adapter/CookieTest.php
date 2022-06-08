@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -15,6 +18,7 @@ use phpmock\Mock;
 use phpmock\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use TypeError;
 
 /**
  * During the execution of some of these tests,
@@ -100,7 +104,7 @@ class CookieTest extends TestCase
      */
     public function testConstructorExceptionNameNotString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         new Cookie(123);
@@ -130,7 +134,7 @@ class CookieTest extends TestCase
      */
     public function testConstructorExceptionTtlNotInt(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         new Cookie('chars', 'bar');
@@ -145,7 +149,7 @@ class CookieTest extends TestCase
      */
     public function testHasException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         $cookie = new Cookie('chars');
@@ -225,7 +229,7 @@ class CookieTest extends TestCase
      */
     public function testGetException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         $cookie = new Cookie('chars');
@@ -257,7 +261,7 @@ class CookieTest extends TestCase
      */
     public function testSetExceptionIdentifierNotString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         $cookie = new Cookie('chars');
@@ -331,7 +335,7 @@ class CookieTest extends TestCase
      */
     public function testRemoveExceptionIdentifierNotString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         $cookie = new Cookie('chars');

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -22,5 +25,5 @@ interface DispatcherInterface
      * @param string $event The name of the Event which should be dispatched
      * @param array $options The options that should get passed to the callback
      */
-    public function dispatch($event, $options);
+    public function dispatch(string $event, mixed $options): void;
 }

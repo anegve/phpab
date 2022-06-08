@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -13,6 +16,7 @@ use InvalidArgumentException;
 use PhpAb\Exception\DuplicateVariantException;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 class TestTest extends TestCase
 {
@@ -38,8 +42,7 @@ class TestTest extends TestCase
      */
     public function testConstructorAndGetIdentifierWithInvalidIdentifier(): void
     {
-        $this->expectExceptionMessage("The provided identifier is not a valid identifier.");
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         // Arrange
         // ...

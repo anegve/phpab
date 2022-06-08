@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,5 +24,5 @@ interface FilterInterface
      *
      * @return boolean Returns true when the user should participate; false otherwise.
      */
-    public function shouldParticipate();
+    public function shouldParticipate(): bool;
 }

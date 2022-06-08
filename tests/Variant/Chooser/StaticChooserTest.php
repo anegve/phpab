@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,6 +12,7 @@
 
 namespace PhpAb\Variant\Chooser;
 
+use PhpAb\Variant\SimpleVariant;
 use PHPUnit\Framework\TestCase;
 
 class StaticChooserTest extends TestCase
@@ -19,19 +23,33 @@ class StaticChooserTest extends TestCase
         $chooser = new StaticChooser(3);
 
         // Act
-        $result = $chooser->chooseVariant([1, 2, 3, 4, 5, 6]);
+        $result = $chooser->chooseVariant(
+            [
+                new SimpleVariant('1'),
+                new SimpleVariant('2'),
+                new SimpleVariant('3'),
+                new SimpleVariant('4'),
+                new SimpleVariant('5'),
+                new SimpleVariant('6'),
+            ]
+        );
 
         // Assert
-        $this->assertEquals(4, $result);
+        $this->assertEquals(new SimpleVariant('4'), $result);
     }
 
     public function testChooseStaticFails(): void
     {
         // Arrange
-        $chooser = new StaticChooser(3);
+        $chooser = new StaticChooser('3');
 
         // Act
-        $result = $chooser->chooseVariant([1, 2]);
+        $result = $chooser->chooseVariant(
+            [
+                new SimpleVariant('1'),
+                new SimpleVariant('2'),
+            ]
+        );
 
         // Assert
         $this->assertNull($result);

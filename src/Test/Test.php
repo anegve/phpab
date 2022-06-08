@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -25,21 +28,21 @@ class Test implements TestInterface
      *
      * @var string
      */
-    private $identifier;
+    private string $identifier;
 
     /**
      * The available variantns for this test.
      *
      * @var VariantInterface[]
      */
-    private $variants;
+    private array $variants;
 
     /**
      * Case specific options
      *
      * @var array
      */
-    private $options = [];
+    private array $options;
 
     /**
      * Initializes a new instance of this class.
@@ -48,9 +51,9 @@ class Test implements TestInterface
      * @param VariantInterface[] $variants The variants that this test has.
      * @param array $options Case specific test options.
      */
-    public function __construct($identifier, $variants = [], array $options = [])
+    public function __construct(string $identifier, array $variants = [], array $options = [])
     {
-        if (!is_string($identifier) || $identifier === '') {
+        if ($identifier === '') {
             throw new InvalidArgumentException('The provided identifier is not a valid identifier.');
         }
 
@@ -62,7 +65,7 @@ class Test implements TestInterface
     /**
      * {@inheritDoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -73,34 +76,42 @@ class Test implements TestInterface
      * @throws DuplicateVariantException
      *
      * @param VariantInterface $variant The variant to add to this test.
+     *
+     * @return self
      */
-    public function addVariant(VariantInterface $variant)
+    public function addVariant(VariantInterface $variant): self
     {
         if (array_key_exists($variant->getIdentifier(), $this->variants)) {
             throw new DuplicateVariantException('A variant with this identifier has already been added.');
         }
 
         $this->variants[$variant->getIdentifier()] = $variant;
+
+        return $this;
     }
 
     /**
      * Sets the variants in this test.
      *
      * @param VariantInterface[] $variants The variants to set.
+     *
+     * @return self
      */
-    public function setVariants($variants)
+    public function setVariants(array $variants): self
     {
         $this->variants = [];
 
         foreach ($variants as $variant) {
             $this->addVariant($variant);
         }
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getVariants()
+    public function getVariants(): array
     {
         return $this->variants;
     }
@@ -110,13 +121,9 @@ class Test implements TestInterface
      *
      * @param string $identifier The identifier of the variant to get.
      */
-    public function getVariant($identifier)
+    public function getVariant(string $identifier): ?VariantInterface
     {
-        if (!array_key_exists($identifier, $this->variants)) {
-            return null;
-        }
-
-        return $this->variants[$identifier];
+        return $this->variants[$identifier] ?? null;
     }
 
     /**
@@ -124,7 +131,7 @@ class Test implements TestInterface
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

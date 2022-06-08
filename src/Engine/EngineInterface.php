@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -27,37 +30,37 @@ interface EngineInterface
      *
      * @return TestInterface[]|array
      */
-    public function getTests();
+    public function getTests(): array;
 
     /**
      * Get a test from the engine
      *
      * @param string $test The identifier of the test
-     * @throws TestNotFoundException Thrown when the requested test does not exists.
      * @return TestInterface
+     *@throws TestNotFoundException Thrown when the requested test does not exists.
      */
-    public function getTest($test);
+    public function getTest(string $test): TestInterface;
 
     /**
      * Adds a test to the Engine
      *
      * @param TestInterface $test
      * @param array $options
-     * @param FilterInterface $filter
-     * @param ChooserInterface $chooser
+     * @param FilterInterface|null $filter
+     * @param ChooserInterface|null $chooser
      * @throws TestCollisionException Thrown when the test already exists.
      */
     public function addTest(
         TestInterface $test,
-        $options = [],
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        array $options = [],
+        ?FilterInterface $filter = null,
+        ?ChooserInterface $chooser = null
     );
 
     /**
      * Starts the tests
      *
-     * @return null
+     * @return void
      */
-    public function start();
+    public function start(): void;
 }

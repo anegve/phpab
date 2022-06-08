@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,7 +12,9 @@
 
 namespace PhpAb\Analytics\DataCollector;
 
+use InvalidArgumentException;
 use PhpAb\Event\SubscriberInterface;
+use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
@@ -24,12 +29,12 @@ class Generic implements SubscriberInterface
     /**
      * @var array Test identifiers and variation indexes
      */
-    private $participations = [];
+    private array $participations = [];
 
     /**
      * {@inheritDoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'phpab.participation.variant_run' => function (array $options) {
@@ -40,7 +45,7 @@ class Generic implements SubscriberInterface
 
                 Assert::isInstanceOf(
                     $options[1],
-                    'PhpAb\Test\Bag',
+                    Bag::class,
                     'Second parameter passed to closure must be instance of Bag.'
                 );
 
@@ -52,7 +57,7 @@ class Generic implements SubscriberInterface
 
                 Assert::isInstanceOf(
                     $options[2],
-                    'PhpAb\Variant\VariantInterface',
+                    VariantInterface::class,
                     'Third parameter passed to closure must be instance of VariantInterface.'
                 );
 
@@ -75,11 +80,8 @@ class Generic implements SubscriberInterface
      * @param string $variationIdentifier
      * @throws InvalidArgumentException
      */
-    public function addParticipation($testIdentifier, $variationIdentifier)
+    public function addParticipation(string $testIdentifier, string $variationIdentifier): void
     {
-        Assert::string($testIdentifier, 'Test identifier must be a string');
-        Assert::string($variationIdentifier, 'Variation name must be a string');
-
         $this->participations[$testIdentifier] = $variationIdentifier;
     }
 
@@ -88,7 +90,7 @@ class Generic implements SubscriberInterface
      *
      * @return array
      */
-    public function getTestsData()
+    public function getTestsData(): array
     {
         return $this->participations;
     }

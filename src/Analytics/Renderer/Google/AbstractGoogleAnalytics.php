@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,12 +24,12 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     /**
      * @var bool Whether or not to include the Api Client
      */
-    private $includeApiClient = false;
+    private bool $includeApiClient = false;
 
     /**
      * @param bool $includeApiClient Whether or not to include the Api Client
      */
-    public function setApiClientInclusion($includeApiClient = false)
+    public function setApiClientInclusion(bool $includeApiClient = false): void
     {
         $this->includeApiClient = true === $includeApiClient;
     }
@@ -34,7 +37,7 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     /**
      * @return bool The value of $includeApiClient
      */
-    public function getApiClientInclusion()
+    public function getApiClientInclusion(): bool
     {
         return $this->includeApiClient;
     }

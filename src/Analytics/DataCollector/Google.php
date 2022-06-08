@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,7 +12,9 @@
 
 namespace PhpAb\Analytics\DataCollector;
 
+use InvalidArgumentException;
 use PhpAb\Event\SubscriberInterface;
+use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
@@ -21,17 +26,17 @@ use Webmozart\Assert\Assert;
  */
 class Google implements SubscriberInterface
 {
-    const EXPERIMENT_ID = 'experimentId';
+    public const EXPERIMENT_ID = 'experimentId';
 
     /**
      * @var array Test identifiers and variation indexes
      */
-    private $participations = [];
+    private array $participations = [];
 
     /**
      * {@inheritDoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'phpab.participation.variant_run' => function ($options) {
@@ -41,7 +46,7 @@ class Google implements SubscriberInterface
 
                 Assert::isInstanceOf(
                     $options[1],
-                    'PhpAb\Test\Bag',
+                    Bag::class,
                     'Second parameter passed to closure must be instance of Bag.'
                 );
 
@@ -53,7 +58,7 @@ class Google implements SubscriberInterface
 
                 Assert::isInstanceOf(
                     $options[2],
-                    'PhpAb\Variant\VariantInterface',
+                    VariantInterface::class,
                     'Third parameter passed to closure must be instance of VariantInterface.'
                 );
 
@@ -89,7 +94,7 @@ class Google implements SubscriberInterface
      * @param int $variationIndex
      * @throws InvalidArgumentException
      */
-    public function addParticipation($testIdentifier, $variationIndex)
+    public function addParticipation(string $testIdentifier, int $variationIndex): void
     {
         Assert::string($testIdentifier, 'Test identifier must be a string');
         Assert::integer($variationIndex, 'Variation index must be integer');
@@ -103,7 +108,7 @@ class Google implements SubscriberInterface
      *
      * @return array
      */
-    public function getTestsData()
+    public function getTestsData(): array
     {
         return $this->participations;
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -25,7 +28,7 @@ class Manager implements ManagerInterface
      *
      * @var StorageInterface
      */
-    private $storage;
+    private StorageInterface $storage;
 
     /**
      * Initializes a new instance of this class.
@@ -40,10 +43,10 @@ class Manager implements ManagerInterface
     /**
      * Gets the variant the user is participating in for the given test.
      *
-     * @param TestInterface|string $test The identifier of the test to get the variant for.
+     * @param string|TestInterface $test The identifier of the test to get the variant for.
      * @return string|null Returns the identifier of the variant or null if not participating.
      */
-    public function getParticipatingVariant($test)
+    public function getParticipatingVariant(TestInterface|string $test): ?string
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
 
@@ -57,11 +60,11 @@ class Manager implements ManagerInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface|string $test The identifier of the test to check.
-     * @param VariantInterface|string|null $variant The identifier of the variant to check
+     * @param string|TestInterface $test The identifier of the test to check.
+     * @param string|VariantInterface|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
-    public function participates($test, $variant = null)
+    public function participates(TestInterface|string $test, string|VariantInterface $variant = null): bool|string
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
@@ -83,11 +86,11 @@ class Manager implements ManagerInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface|string $test The identifier of the test that should be participated.
-     * @param VariantInterface|string|null $variant The identifier of the variant that was chosen or
+     * @param string|TestInterface $test The identifier of the test that should be participated.
+     * @param string|VariantInterface|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */
-    public function participate($test, $variant)
+    public function participate(TestInterface|string $test, string|VariantInterface|null $variant): void
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;

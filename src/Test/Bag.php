@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -24,28 +27,28 @@ class Bag
      *
      * @var TestInterface
      */
-    private $test;
+    private TestInterface $test;
 
     /**
      * The options for this test.
      *
      * @var array
      */
-    private $options;
+    private array $options;
 
     /**
      * The participation filter that checks if a guest should participate in the test.
      *
      * @var FilterInterface
      */
-    private $participationFilter;
+    private FilterInterface $participationFilter;
 
     /**
      * The variant chooser that decides which variant of the test to use.
      *
      * @var ChooserInterface
      */
-    private $variantChooser;
+    private ChooserInterface $variantChooser;
 
     /**
      * Initializes a new instance of this class.
@@ -59,7 +62,7 @@ class Bag
         TestInterface $test,
         FilterInterface $participationFilter,
         ChooserInterface $variantChooser,
-        $options = []
+        array $options = []
     ) {
         $this->test = $test;
         $this->options = $options;
@@ -72,7 +75,7 @@ class Bag
      *
      * @return TestInterface
      */
-    public function getTest()
+    public function getTest(): TestInterface
     {
         return $this->test;
     }
@@ -85,7 +88,7 @@ class Bag
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -95,7 +98,7 @@ class Bag
      *
      * @return FilterInterface
      */
-    public function getParticipationFilter()
+    public function getParticipationFilter(): FilterInterface
     {
         return $this->participationFilter;
     }
@@ -108,7 +111,7 @@ class Bag
      *
      * @return ChooserInterface
      */
-    public function getVariantChooser()
+    public function getVariantChooser(): ChooserInterface
     {
         return $this->variantChooser;
     }

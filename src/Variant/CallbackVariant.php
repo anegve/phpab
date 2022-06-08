@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,7 +24,7 @@ class CallbackVariant implements VariantInterface
      *
      * @var string
      */
-    private $identifier;
+    private string $identifier;
 
     /**
      * The callback that should be invoked when this variant is ran.
@@ -36,7 +39,7 @@ class CallbackVariant implements VariantInterface
      * @param string $identifier The Identifier of the Variant
      * @param callable $callback The Callable to execute on run
      */
-    public function __construct($identifier, callable $callback)
+    public function __construct(string $identifier, callable $callback)
     {
         $this->identifier = $identifier;
         $this->callback = $callback;
@@ -45,7 +48,7 @@ class CallbackVariant implements VariantInterface
     /**
      * {@inheritDoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -53,7 +56,7 @@ class CallbackVariant implements VariantInterface
     /**
      * {@inheritDoc}
      */
-    public function run()
+    public function run(): void
     {
         call_user_func($this->callback);
     }

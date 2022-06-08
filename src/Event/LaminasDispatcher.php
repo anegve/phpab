@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -23,7 +26,7 @@ class LaminasDispatcher implements DispatcherInterface
      *
      * @var EventManager
      */
-    private $eventManager;
+    private EventManager $eventManager;
 
     /**
      * Initializes a new instance of this class.
@@ -40,7 +43,7 @@ class LaminasDispatcher implements DispatcherInterface
      *
      * @return EventManager
      */
-    public function getEventManager()
+    public function getEventManager(): EventManager
     {
         return $this->eventManager;
     }
@@ -51,8 +54,8 @@ class LaminasDispatcher implements DispatcherInterface
      * @param string $event The name of the Event which should be dispatched
      * @param array $options The options that should get passed to the callback
      */
-    public function dispatch($event, $options)
+    public function dispatch(string $event, mixed $options): void
     {
-        return $this->eventManager->trigger($event, $this, $options);
+        $this->eventManager->trigger($event, $this, $options);
     }
 }

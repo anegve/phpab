@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -33,42 +36,42 @@ class Engine implements EngineInterface
      *
      * @var Bag[]
      */
-    public $tests = [];
+    public array $tests = [];
 
     /**
      * The participation manager used to check if a user particiaptes.
      *
      * @var ManagerInterface
      */
-    private $participationManager;
+    private ManagerInterface $participationManager;
 
     /**
      * The event dispatcher that dispatches events related to tests.
      *
      * @var DispatcherInterface
      */
-    private $dispatcher;
+    private DispatcherInterface $dispatcher;
 
     /**
      * The default filter that is used when a test bag has no filter set.
      *
-     * @var FilterInterface
+     * @var FilterInterface|null
      */
-    private $filter;
+    private ?FilterInterface $filter;
 
     /**
      * The default variant chooser that is used when a test bag has no variant chooser set.
      *
-     * @var ChooserInterface
+     * @var ChooserInterface|null
      */
-    private $chooser;
+    private ?ChooserInterface $chooser;
 
     /**
      * Locks the engine for further manipulaton
      *
      * @var boolean
      */
-    private $locked = false;
+    private bool $locked = false;
 
     /**
      * Initializes a new instance of this class.
@@ -81,8 +84,8 @@ class Engine implements EngineInterface
     public function __construct(
         ManagerInterface $participationManager,
         DispatcherInterface $dispatcher,
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        ?FilterInterface $filter = null,
+        ?ChooserInterface $chooser = null
     ) {
 
         $this->participationManager = $participationManager;
@@ -94,7 +97,7 @@ class Engine implements EngineInterface
     /**
      * {@inheritDoc}
      */
-    public function getTests()
+    public function getTests(): array
     {
         $tests = [];
         foreach ($this->tests as $bag) {
@@ -109,7 +112,7 @@ class Engine implements EngineInterface
      *
      * @param string $test The identifier of the test
      */
-    public function getTest($test)
+    public function getTest(string $test): TestInterface
     {
         if (! isset($this->tests[$test])) {
             throw new TestNotFoundException('No test with identifier '.$test.' found');
@@ -128,10 +131,10 @@ class Engine implements EngineInterface
      */
     public function addTest(
         TestInterface $test,
-        $options = [],
+        array $options = [],
         FilterInterface $filter = null,
         ChooserInterface $chooser = null
-    ) {
+    ): self {
 
         if ($this->locked) {
             throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
@@ -143,19 +146,21 @@ class Engine implements EngineInterface
 
         // If no filter/chooser is set use the ones from
         // the engine.
-        $filter = $filter ? $filter : $this->filter;
-        $chooser = $chooser ? $chooser : $this->chooser;
+        $filter = $filter ?: $this->filter;
+        $chooser = $chooser ?: $this->chooser;
 
         Assert::notNull($filter, 'There must be at least one filter in the Engine or in the TestBag');
         Assert::notNull($chooser, 'There must be at least one chooser in the Engine or in the TestBag');
 
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function start()
+    public function start(): void
     {
         // Check if already locked
         if ($this->locked) {
@@ -175,9 +180,9 @@ class Engine implements EngineInterface
      *
      * @param Bag $bag
      *
-     * @return bool true if the variant got executed, false otherwise
+     * @return void true if the variant got executed, false otherwise
      */
-    private function handleTestBag(Bag $bag)
+    private function handleTestBag(Bag $bag): void
     {
         $test = $bag->getTest();
 
@@ -234,7 +239,7 @@ class Engine implements EngineInterface
      * @param Bag $bag
      * @param VariantInterface $variant
      */
-    private function activateVariant(Bag $bag, VariantInterface $variant)
+    private function activateVariant(Bag $bag, VariantInterface $variant): void
     {
         $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
 

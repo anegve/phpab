@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -22,28 +25,28 @@ class ParticipationEvent
     /**
      * This Event will be fired once a participation for a user is registered.
      */
-    const PARTICIPATION = 'phpab.participation';
+    public const PARTICIPATION = 'phpab.participation';
 
     /**
      * The test to participate in.
      *
      * @var TestInterface
      */
-    private $test;
+    private TestInterface $test;
 
     /**
      * The variant that is chosen.
      *
      * @var VariantInterface
      */
-    private $variant;
+    private VariantInterface $variant;
 
     /**
      * A flag indicating whether or not the user already participates in the test.
      *
      * @var boolean
      */
-    private $isNew;
+    private bool $isNew;
 
     /**
      * Initializes a new instance of this class.
@@ -51,7 +54,7 @@ class ParticipationEvent
      * @param VariantInterface $variant The Variant the user is associated with
      * @param boolean $isNew Indicates weather the user is new or has an old participation from the storage.
      */
-    public function __construct(TestInterface $test, VariantInterface $variant, $isNew)
+    public function __construct(TestInterface $test, VariantInterface $variant, bool $isNew)
     {
         $this->test = $test;
         $this->variant = $variant;
@@ -63,7 +66,7 @@ class ParticipationEvent
      *
      * @return TestInterface
      */
-    public function getTest()
+    public function getTest(): TestInterface
     {
         return $this->test;
     }
@@ -73,7 +76,7 @@ class ParticipationEvent
      *
      * @return VariantInterface
      */
-    public function getVariant()
+    public function getVariant(): VariantInterface
     {
         return $this->variant;
     }
@@ -83,7 +86,7 @@ class ParticipationEvent
      *
      * @return boolean
      */
-    public function isNew()
+    public function isNew(): bool
     {
         return $this->isNew;
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -25,34 +28,32 @@ class Cookie implements AdapterInterface
      *
      * @var string
      */
-    protected $cookieName;
+    protected string $cookieName;
     /**
      * The cookie's time to live in seconds
      *
      * @var int
      */
-    protected $ttl;
+    protected int $ttl;
     /**
      * The array of which will be saved in cookie.
      *
      * @var null|array
      */
-    protected $data;
+    protected ?array $data = null;
 
     /**
      * Initializes a new instance of this class.
      *
      * @param string $cookieName   The name the cookie.
-     * @param int   $ttl           How long should the cookie last in browser. Default 5 years
+     * @param int $ttl           How long should the cookie last in browser. Default 5 years
      *                             Setting a negative number will make cookie expire after current session
      * @throws InvalidArgumentException
      */
-    public function __construct($cookieName, $ttl = 157766400)
+    public function __construct(string $cookieName, int $ttl = 157766400)
     {
         // We cannot typehint for primitive types yet so therefore we check if the cookie name is a (valid) string.
-        Assert::string($cookieName, 'The cookie name is invalid.');
         Assert::notEmpty($cookieName, 'The cookie name is invalid.');
-        Assert::integer($ttl, 'The cookie ttl parameter should be a integer.');
 
         $this->cookieName = $cookieName;
 
@@ -62,7 +63,7 @@ class Cookie implements AdapterInterface
     /**
      * Parses any previous cookie and stores it internally
      */
-    protected function parseExistingCookie()
+    protected function parseExistingCookie(): void
     {
         if (is_array($this->data)) {
             return;
@@ -88,7 +89,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    protected function saveCookie()
+    protected function saveCookie(): bool
     {
         $this->parseExistingCookie();
 
@@ -98,7 +99,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         Assert::string($identifier, 'Test identifier is invalid.');
         Assert::notEmpty($identifier, 'Test identifier is invalid.');
@@ -111,7 +112,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function get($identifier)
+    public function get(string $identifier): mixed
     {
         if (!$this->has($identifier)) {
             return null;
@@ -123,11 +124,11 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function set($identifier, $participation)
+    public function set(string $identifier, mixed $value): bool
     {
         $this->has($identifier);
 
-        if ('' === $participation) {
+        if ('' === $value) {
             throw new InvalidArgumentException('Participation name is invalid.');
         }
 
@@ -135,7 +136,7 @@ class Cookie implements AdapterInterface
             throw new RuntimeException('Headers have been sent. Cannot save cookie.');
         }
 
-        $this->data[$identifier] = $participation;
+        $this->data[$identifier] = $value;
 
         return $this->saveCookie();
     }
@@ -143,7 +144,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function all()
+    public function all(): array
     {
         $this->parseExistingCookie();
 
@@ -153,7 +154,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function remove($identifier)
+    public function remove(string $identifier): mixed
     {
         $this->has($identifier);
 
@@ -177,7 +178,7 @@ class Cookie implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): array
     {
         if (headers_sent()) {
             throw new RuntimeException('Headers have been sent. Cannot save cookie.');

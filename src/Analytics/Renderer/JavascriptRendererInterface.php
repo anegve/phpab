@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -21,5 +24,5 @@ interface JavascriptRendererInterface extends RendererInterface
      *
      * @return string Returns the JavaScript code that should be rendered and the API client.
      */
-    public function getScript();
+    public function getScript(): string;
 }

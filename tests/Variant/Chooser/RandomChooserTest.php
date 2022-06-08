@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -19,10 +22,10 @@ class RandomChooserTest extends TestCase
 {
     public function testChooseVariants(): void
     {
-        // Override mt_rand
+        // Override random_int
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-            ->setName('mt_rand')
+            ->setName('random_int')
             ->setFunctionProvider(new FixedValueFunction(2));
         $mock = $builder->build();
         $mock->enable();
@@ -49,10 +52,10 @@ class RandomChooserTest extends TestCase
 
     public function testChooseVariantsWithKeys(): void
     {
-        // Override mt_rand
+        // Override random_int
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-            ->setName('mt_rand')
+            ->setName('random_int')
             ->setFunctionProvider(new FixedValueFunction(0));
         $mock = $builder->build();
         $mock->enable();

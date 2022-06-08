@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -23,7 +26,7 @@ class SymfonyBridge implements DispatcherInterface
      *
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * Initializes a new instance of this class.
@@ -41,12 +44,12 @@ class SymfonyBridge implements DispatcherInterface
      * @param string $event The name of the Event which should be dispatched
      * @param array $options The options that should get passed to the callback
      */
-    public function dispatch($event, $options)
+    public function dispatch(string $event, mixed $options): void
     {
         $listeners = $this->eventDispatcher->getListeners($event);
 
         foreach ($listeners as $listener) {
-            call_user_func($listener, $options);
+            $listener($options);
         }
     }
 
@@ -55,7 +58,7 @@ class SymfonyBridge implements DispatcherInterface
      *
      * @return EventDispatcherInterface
      */
-    public function getOriginal()
+    public function getOriginal(): EventDispatcherInterface
     {
         return $this->eventDispatcher;
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -26,5 +29,5 @@ interface SubscriberInterface
      *                 'eventname2' => callable
      *               ]
      */
-    public function getSubscribedEvents();
+    public function getSubscribedEvents(): array;
 }

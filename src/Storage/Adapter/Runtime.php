@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -19,7 +22,7 @@ class Runtime implements AdapterInterface
     /**
      * @var array The data that has been set.
      */
-    private $data;
+    private array $data;
 
     /**
      * Initializes a new instance of this class.
@@ -34,7 +37,7 @@ class Runtime implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return array_key_exists($identifier, $this->data);
     }
@@ -42,7 +45,7 @@ class Runtime implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function get($identifier)
+    public function get(string $identifier): mixed
     {
         if (!$this->has($identifier)) {
             return null;
@@ -54,15 +57,16 @@ class Runtime implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function set($identifier, $value)
+    public function set(string $identifier, mixed $value): bool
     {
         $this->data[$identifier] = $value;
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function all()
+    public function all(): array
     {
         return $this->data;
     }
@@ -70,7 +74,7 @@ class Runtime implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function remove($identifier)
+    public function remove(string $identifier): mixed
     {
         if (!$this->has($identifier)) {
             return null;
@@ -86,7 +90,7 @@ class Runtime implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): array
     {
         $removedValues = $this->data;
 

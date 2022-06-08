@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -24,15 +27,15 @@ class Dispatcher implements DispatcherInterface
      *              'eventname2' => [callable, callable, callable]
      *            ]
      */
-    private $listeners = [];
+    private array $listeners = [];
 
     /**
      * Adds the given callback to this dispatcher so that it listens to the given event name.
      *
-     * @param string   $eventName The name of the event to listen for
+     * @param string $eventName The name of the event to listen for
      * @param callable $callable  The Callable to execute once the event takes place
      */
-    public function addListener($eventName, callable $callable)
+    public function addListener(string $eventName, callable $callable): void
     {
         $this->listeners[$eventName][] = $callable;
     }
@@ -42,7 +45,7 @@ class Dispatcher implements DispatcherInterface
      *
      * @param SubscriberInterface $subscriber The subscriber which can subscribe to multiple events
      */
-    public function addSubscriber(SubscriberInterface $subscriber)
+    public function addSubscriber(SubscriberInterface $subscriber): void
     {
         foreach ($subscriber->getSubscribedEvents() as $eventName => $callable) {
             $this->addListener($eventName, $callable);
@@ -55,7 +58,7 @@ class Dispatcher implements DispatcherInterface
      * @param string $event The name of the Event which should be dispatched
      * @param array $options The options that should get passed to the callback
      */
-    public function dispatch($event, $options)
+    public function dispatch(string $event, mixed $options): void
     {
         if (! array_key_exists($event, $this->listeners)) {
             // no callbacks given for this event
@@ -65,7 +68,7 @@ class Dispatcher implements DispatcherInterface
         // Iterate through each Listener attached to this event
         // and call it with the given options
         foreach ($this->listeners[$event] as $callable) {
-            call_user_func($callable, $options);
+            $callable($options);
         }
     }
 }

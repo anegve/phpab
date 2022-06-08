@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -23,14 +26,14 @@ class RandomChooser implements ChooserInterface
      *
      * @param VariantInterface[] $variants Variants to choose from
      */
-    public function chooseVariant($variants)
+    public function chooseVariant(array $variants): ?VariantInterface
     {
         $count = count($variants);
         if (0 === $count) {
             return null;
         }
 
-        $chosenCount = mt_rand(0, $count - 1);
+        $chosenCount = random_int(0, $count - 1);
         $keys = array_keys($variants);
 
         return $variants[$keys[$chosenCount]];
