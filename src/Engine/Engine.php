@@ -126,14 +126,14 @@ class Engine implements EngineInterface
      *
      * @param TestInterface $test
      * @param array $options
-     * @param FilterInterface $filter
-     * @param ChooserInterface $chooser
+     * @param FilterInterface|null $filter
+     * @param ChooserInterface|null $chooser
      */
     public function addTest(
         TestInterface $test,
         array $options = [],
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        ?FilterInterface $filter = null,
+        ?ChooserInterface $chooser = null
     ): self {
 
         if ($this->locked) {
