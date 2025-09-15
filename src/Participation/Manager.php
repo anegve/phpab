@@ -64,7 +64,7 @@ class Manager implements ManagerInterface
      * @param string|VariantInterface|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
-    public function participates(TestInterface|string $test, string|VariantInterface $variant = null): bool|string
+    public function participates(TestInterface|string $test, null|string|VariantInterface $variant = null): bool|string
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;

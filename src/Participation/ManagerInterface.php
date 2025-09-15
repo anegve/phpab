@@ -37,7 +37,7 @@ interface ManagerInterface
      * @param VariantInterface|string|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
-    public function participates(TestInterface|string $test, string|VariantInterface $variant = null): bool|string;
+    public function participates(TestInterface|string $test, null|string|VariantInterface $variant = null): bool|string;
 
     /**
      * Sets the participation to a test with the participation at a specific variant.
